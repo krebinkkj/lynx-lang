@@ -68,6 +68,9 @@ Token Lexer::getNextToken()
   case '=':
     currentPos++;
     return {TokenType::ASSIGN, "="};
+  case ';':
+    currentPos++;
+    return {TokenType::SEMICOLON, ";"};
   }
 
   // Se não for nenhum dos tipos acima, consideramos o fim

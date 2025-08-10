@@ -28,23 +28,17 @@
 
 int main()
 {
-  std::string source_code_1 = "x = 10";
-  Lexer lexer_1(source_code_1);
-  Parser parser_1(lexer_1);
-  Evaluator evaluator_1;
-  auto ast_1 = parser_1.parseExpression();
-  double result_1 = evaluator_1.evaluate(ast_1.get());
-  std::cout << "Resultado da atribuição: " << result_1 << std::endl;
+  std::string code = "x = 10; y = x * 2; y + 5";
 
-  std::cout << "------------------------" << std::endl;
+  Lexer lexer(code);
+  Parser parser(lexer);
 
-  std::string source_code_2 = "x + 5";
-  Lexer lexer_2(source_code_2);
-  Parser parser_2(lexer_2);
-  Evaluator evaluator_2;
-  auto ast_2 = parser_2.parseExpression();
-  double result_2 = evaluator_2.evaluate(ast_2.get());
-  std::cout << "Resultado do uso: " << result_2 << std::endl;
+  std::cout << "Código-fonte: " << code << std::endl;
+
+  auto program_ast = parser.parseProgram();
+
+  Evaluator evaluator;
+  evaluator.evaluateProgram(program_ast.get());
 
   return 0;
 }
