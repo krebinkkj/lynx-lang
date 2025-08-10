@@ -6,7 +6,7 @@
 #include "Evaluator.h"
 
 int main() {
-  std::string source_code = "10 + 5";
+  std::string source_code = "10 * 5";
   Lexer lexer(source_code);
   Parser parser(lexer);
 
