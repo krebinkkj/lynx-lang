@@ -4,17 +4,18 @@
 #include "Lexer.h"
 #include "AST.h"
 
-class Parser {
-  public:
-    explicit Parser(Lexer &lexer);
-    std::unique_ptr<Expr> parseExpression();
+class Parser
+{
+public:
+  explicit Parser(Lexer &lexer);
+  std::unique_ptr<Expr> parseExpression();
 
-  private:
-    Lexer &lexer;
-    Token currentToken;
+private:
+  Lexer &lexer;
+  Token currentToken;
 
-    void getNextToken();
-    std::unique_ptr<Expr> parseNumberExpr();
+  void getNextToken();
+  std::unique_ptr<Expr> parseNumberExpr();
 };
 
 #endif

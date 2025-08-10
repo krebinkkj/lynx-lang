@@ -1,10 +1,13 @@
 #ifndef AST_H
 #define AST_H
 
-#include <memory> // std::unique_ptr
+#include <memory>
 #include <vector>
+#include <string>
+#include <utility>
 #include "Token.h"
 
+// Classe base para todos os nós da árvore
 class Expr {
   public:
     virtual ~Expr() = default;
@@ -22,7 +25,8 @@ class BinaryExpr : public Expr {
     std::unique_ptr<Expr> left;
     std::unique_ptr<Expr> right;
 
-    BinaryExpr(std::string op, std::unique_ptr<Expr> left, std::unique_ptr<Expr> right) : op(std::move(op)), left(std::move(left)), right(std::move(right)) {}
+    BinaryExpr(std::string op, std::unique_ptr<Expr> left, std::unique_ptr<Expr> right)
+        : op(std::move(op)), left(std::move(left)), right(std::move(right)) {}
 };
 
 #endif

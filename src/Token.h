@@ -3,15 +3,14 @@
 
 #include <string>
 
-enum class TokenType
-{
+enum class TokenType {
   EOF_TOKEN,
   IDENTIFIER,
   NUMBER,
-  PLUS, // +
-  MINUS, // -
+  PLUS,     // +
+  MINUS,    // -
   MULTIPLY, // *
-  DIVIDE, // /
+  DIVIDE,   // /
 };
 
 struct Token {
