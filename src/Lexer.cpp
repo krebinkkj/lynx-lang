@@ -30,6 +30,23 @@ Token Lexer::getNextToken() {
       currentPos++;
     }
     return {TokenType::IDENTIFIER, identifier};
+
+    switch(currentChar) {
+      case '+':
+        currentPos++;
+        return {TokenType::PLUS, "+"};
+      case '-':
+        currentPos++;
+        return {TokenType::MINUS, "-"};
+
+      case '*':
+        currentPos++;
+        return {TokenType::MULTIPLY, "*"};
+
+      case '/':
+        currentPos++;
+        return {TokenType::DIVIDE, "/"};
+      }
   }
 
   return {TokenType::EOF_TOKEN, ""};
