@@ -23,7 +23,7 @@ std::unique_ptr<Expr> Parser::parseExpression()
   auto left = parseNumberExpr(); // Pega o primeiro número
 
   // Verifica se o próximo token é um operador
-  if (currentToken.type != TokenType::PLUS && currentToken.type != TokenType::MINUS)
+  if (currentToken.type != TokenType::PLUS && currentToken.type != TokenType::MINUS && currentToken.type != TokenType::MULTIPLY && currentToken.type != TokenType::DIVIDE)
   {
     return left;
   }
