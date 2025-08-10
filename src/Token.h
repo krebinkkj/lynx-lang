@@ -3,17 +3,30 @@
 
 #include <string>
 
-enum class TokenType {
+enum class TokenType
+{
+  // Fim do arquivo
   EOF_TOKEN,
+
+  // Identificadores (nomes de variáveis, funções)
   IDENTIFIER,
+
+  // Literais
   NUMBER,
+
+  // Operadores
   PLUS,     // +
   MINUS,    // -
   MULTIPLY, // *
   DIVIDE,   // /
+
+  // Parênteses
+  LPAREN, // (
+  RPAREN, // )
 };
 
-struct Token {
+struct Token
+{
   TokenType type;
   std::string value;
 };

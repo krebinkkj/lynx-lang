@@ -1,13 +1,14 @@
 #include "Parser.h"
 #include <iostream>
 
-Parser::Parser(Lexer& lexer) : lexer(lexer) {
+Parser::Parser(Lexer &lexer) : lexer(lexer) {
+  // Definindo a precedência dos operadores
   opPrecedence[TokenType::PLUS] = 10;
   opPrecedence[TokenType::MINUS] = 10;
   opPrecedence[TokenType::MULTIPLY] = 20;
   opPrecedence[TokenType::DIVIDE] = 20;
 
-  getNextToken();
+  getNextToken(); // Pega o primeiro token
 }
 
 void Parser::getNextToken() {
@@ -28,7 +29,19 @@ std::unique_ptr<Expr> Parser::parsePrimary() {
     getNextToken();
     return result;
   }
-  std::cerr << "Error: Token inesperado '" << currentToken.value << "'" << std::endl;
+
+  if (currentToken.type == TokenType::LPAREN) {
+    getNextToken(); // ignore the '('
+    auto expr = parseExpression(); // call the recursive expression analysis
+    if (currentToken.type != TokenType::RPAREN) {
+      std::cerr << "Erro: Esperado ')' após a expressão" << std::endl;
+      return nullptr;
+    }
+    getNextToken(); // ignore the ')'
+    return expr;
+  }
+
+  std::cerr << "Erro: Token esperado '" << currentToken.value << "'" << std::endl;
   return nullptr;
 }
 
@@ -42,7 +55,7 @@ Parser::parseBinaryOpExpr(std::unique_ptr<Expr> left, int exprPrec) {
     }
 
     std::string binOp = currentToken.value;
-    getNextToken();
+    getNextToken(); // Advance for the next token after the operator
 
     auto right = parsePrimary();
     if (!right) {

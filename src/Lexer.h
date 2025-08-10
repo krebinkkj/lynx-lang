@@ -4,7 +4,8 @@
 #include <string>
 #include "Token.h"
 
-class Lexer {
+class Lexer
+{
 public:
   explicit Lexer(const std::string &source);
   Token getNextToken();

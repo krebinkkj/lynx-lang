@@ -4,8 +4,8 @@
 #include "AST.h"
 
 class Evaluator {
-  public:
-    double evaluate(const Expr *ast);
+public:
+    double evaluate(const Expr* ast);
 };
 
 #endif
