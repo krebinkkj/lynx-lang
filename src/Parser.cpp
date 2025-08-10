@@ -98,3 +98,24 @@ std::unique_ptr<Expr> Parser::parseExpression() {
   }
   return parseBinaryOpExpr(std::move(left), 0);
 }
+
+std::unique_ptr<Expr> Parser::parseStatement() {
+  auto expr = parseExpression();
+  if (currentToken.type == TokenType::SEMICOLON) {
+    getNextToken();
+  }
+  return expr;
+}
+
+std::unique_ptr<Program> Parser::parseProgram() {
+  auto program = std::make_unique<Program>();
+  while (currentToken.type != TokenType::EOF_TOKEN) {
+    auto statement = parseStatement();
+    if (statement) {
+      program->statements.push_back(std::move(statement));
+    } else {
+      return nullptr;
+    }
+  }
+  return program;
+}

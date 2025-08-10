@@ -26,6 +26,9 @@ enum class TokenType
 
   // Atribuição
   ASSIGN, // =
+
+  // Separador de intruções
+  SEMICOLON, // ;
 };
 
 struct Token

@@ -48,4 +48,9 @@ class AssignmentExpr : public Expr {
     AssignmentExpr(std::string name, std::unique_ptr<Expr> value) : name(std::move(name)), value(std::move(value)) {}
 };
 
+class Program {
+  public:
+    std::vector<std::unique_ptr<Expr>> statements;
+};
+
 #endif

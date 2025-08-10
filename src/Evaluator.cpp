@@ -40,3 +40,10 @@ double Evaluator::evaluate(const Expr* ast) {
 
     return 0;
 }
+
+void Evaluator::evaluateProgram(const Program* program) {
+    for (const auto& statement : program->statements) {
+        double result = evaluate(statement.get());
+        std::cout << "Resultado: " << result << std::endl;
+    }
+}

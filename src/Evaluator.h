@@ -6,10 +6,11 @@
 
 class Evaluator {
     public:
-        double evaluate(const Expr* ast);
+        void evaluateProgram(const Program *program);
 
     private:
         std::map<std::string, double> variables;
+        double evaluate(const Expr *ast);
 };
 
 #endif
