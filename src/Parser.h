@@ -18,6 +18,7 @@ private:
 
   void getNextToken();
   std::unique_ptr<Expr> parsePrimary();
+  std::unique_ptr<Expr> parseVariableExpr();
   std::unique_ptr<Expr> parseBinaryOpExpr(std::unique_ptr<Expr> left, int exprPrec);
   int getOpPrecedence();
 };

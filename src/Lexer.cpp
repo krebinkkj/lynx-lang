@@ -65,6 +65,9 @@ Token Lexer::getNextToken()
   case ')':
     currentPos++;
     return {TokenType::RPAREN, ")"}; // Token temporário para ')', será corrigido
+  case '=':
+    currentPos++;
+    return {TokenType::ASSIGN, "="};
   }
 
   // Se não for nenhum dos tipos acima, consideramos o fim

@@ -34,4 +34,18 @@ public:
       : op(std::move(op)), left(std::move(left)), right(std::move(right)) {}
 };
 
+
+class VariableExpr : public Expr {
+  public:
+    std::string name;
+    explicit VariableExpr(std::string name) : name(std::move(name)) {}
+};
+
+class AssignmentExpr : public Expr {
+  public:
+    std::string name;
+    std::unique_ptr<Expr> value;
+    AssignmentExpr(std::string name, std::unique_ptr<Expr> value) : name(std::move(name)), value(std::move(value)) {}
+};
+
 #endif

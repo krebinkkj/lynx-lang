@@ -23,6 +23,9 @@ enum class TokenType
   // Parênteses
   LPAREN, // (
   RPAREN, // )
+
+  // Atribuição
+  ASSIGN, // =
 };
 
 struct Token

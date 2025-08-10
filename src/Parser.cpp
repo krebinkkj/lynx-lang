@@ -20,7 +20,7 @@ int Parser::getOpPrecedence() {
   if (it != opPrecedence.end()) {
     return it->second;
   }
-  return -1; // -1 to invalid operators
+  return -1;
 }
 
 std::unique_ptr<Expr> Parser::parsePrimary() {
@@ -31,31 +31,49 @@ std::unique_ptr<Expr> Parser::parsePrimary() {
   }
 
   if (currentToken.type == TokenType::LPAREN) {
-    getNextToken(); // ignore the '('
-    auto expr = parseExpression(); // call the recursive expression analysis
+    getNextToken();
+    auto expr = parseExpression();
     if (currentToken.type != TokenType::RPAREN) {
-      std::cerr << "Erro: Esperado ')' após a expressão" << std::endl;
+      std::cerr << "Error: Esperado ')' após a expressão" << std::endl;
       return nullptr;
     }
-    getNextToken(); // ignore the ')'
+    getNextToken();
     return expr;
   }
 
-  std::cerr << "Erro: Token esperado '" << currentToken.value << "'" << std::endl;
+  if (currentToken.type == TokenType::IDENTIFIER) {
+    return parseVariableExpr();
+  }
+
+  std::cerr << "Error: Token inesperado '" << currentToken.value << "'" << std::endl;
   return nullptr;
+}
+
+std::unique_ptr<Expr> Parser::parseVariableExpr() {
+  std::string name = currentToken.value;
+  getNextToken();
+
+  if (currentToken.type == TokenType::ASSIGN) {
+    getNextToken();
+    auto value = parseExpression();
+    if (!value) {
+      return nullptr;
+    }
+    return std::make_unique<AssignmentExpr>(name, std::move(value));
+  }
+  return std::make_unique<VariableExpr>(name);
 }
 
 std::unique_ptr<Expr>
 Parser::parseBinaryOpExpr(std::unique_ptr<Expr> left, int exprPrec) {
   while (true) {
     int opPrec = getOpPrecedence();
-
     if (opPrec < exprPrec) {
       return left;
     }
 
     std::string binOp = currentToken.value;
-    getNextToken(); // Advance for the next token after the operator
+    getNextToken();
 
     auto right = parsePrimary();
     if (!right) {
@@ -69,7 +87,6 @@ Parser::parseBinaryOpExpr(std::unique_ptr<Expr> left, int exprPrec) {
         return nullptr;
       }
     }
-
     left = std::make_unique<BinaryExpr>(binOp, std::move(left), std::move(right));
   }
 }
@@ -79,6 +96,5 @@ std::unique_ptr<Expr> Parser::parseExpression() {
   if (!left) {
     return nullptr;
   }
-
   return parseBinaryOpExpr(std::move(left), 0);
 }

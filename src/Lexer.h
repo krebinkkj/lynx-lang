@@ -4,15 +4,14 @@
 #include <string>
 #include "Token.h"
 
-class Lexer
-{
-public:
-  explicit Lexer(const std::string &source);
-  Token getNextToken();
+class Lexer {
+  public:
+    explicit Lexer(const std::string &source);
+    Token getNextToken();
 
-private:
-  std::string source;
-  size_t currentPos;
+  private:
+    std::string source;
+    size_t currentPos;
 };
 
 #endif
