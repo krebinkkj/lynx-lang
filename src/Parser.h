@@ -3,6 +3,7 @@
 
 #include "Lexer.h"
 #include "AST.h"
+#include <map>
 
 class Parser
 {
@@ -13,9 +14,12 @@ public:
 private:
   Lexer &lexer;
   Token currentToken;
+  std::map<TokenType, int> opPrecedence;
 
   void getNextToken();
-  std::unique_ptr<Expr> parseNumberExpr();
+  std::unique_ptr<Expr> parsePrimary();
+  std::unique_ptr<Expr> parseBinaryOpExpr(std::unique_ptr<Expr> left, int exprPrec);
+  int getOpPrecedence();
 };
 
 #endif
