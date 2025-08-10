@@ -1,0 +1,152 @@
+Entendido. O erro deve estar em algum detalhe que é difícil de encontrar. Para que possamos seguir em frente com a certeza de que a base está funcionando, vou enviar o código completo e corrigido de todos os arquivos que criamos e modificamos até agora.
+Por favor, substitua os arquivos na sua pasta src/ e o Makefile pelos códigos abaixo.
+src/Token.h
+
+
+src/Lexer.h
+#ifndef LEXER_H
+#define LEXER_H
+
+#include <string>
+#include "Token.h"
+
+class Lexer {
+public:
+    explicit Lexer(const std::string& source);
+    Token getNextToken();
+
+private:
+    std::string source;
+    size_t currentPos;
+};
+
+#endif
+
+src/Lexer.cpp
+#include "Lexer.h"
+#include <cctype>
+
+Lexer::Lexer(const std::string& source)
+    : source(source), currentPos(0) {}
+
+Token Lexer::getNextToken() {
+    // Pular espaços em branco
+    while (currentPos < source.length() && isspace(source[currentPos])) {
+        currentPos++;
+    }
+
+    // Checar se chegamos ao fim do arquivo
+    if (currentPos >= source.length()) {
+        return {TokenType::EOF_TOKEN, ""};
+    }
+
+    char currentChar = source[currentPos];
+
+    // Checar por números
+    if (isdigit(currentChar)) {
+        std::string number;
+        while (currentPos < source.length() && isdigit(source[currentPos])) {
+            number += source[currentPos];
+            currentPos++;
+        }
+        return {TokenType::NUMBER, number};
+    }
+
+    // Checar por identificadores (letras e _)
+    if (isalpha(currentChar) || currentChar == '_') {
+        std::string identifier;
+        while (currentPos < source.length() && (isalnum(source[currentPos]) || source[currentPos] == '_')) {
+            identifier += source[currentPos];
+            currentPos++;
+        }
+        return {TokenType::IDENTIFIER, identifier};
+    }
+
+    // Checar por operadores
+    switch (currentChar) {
+        case '+':
+            currentPos++;
+            return {TokenType::PLUS, "+"};
+        case '-':
+            currentPos++;
+            return {TokenType::MINUS, "-"};
+        case '*':
+            currentPos++;
+            return {TokenType::MULTIPLY, "*"};
+        case '/':
+            currentPos++;
+            return {TokenType::DIVIDE, "/"};
+    }
+
+    // Se não for nenhum dos tipos acima, consideramos o fim
+    return {TokenType::EOF_TOKEN, ""};
+}
+
+src/AST.h
+#ifndef AST_H
+#define AST_H
+
+#include <memory>
+#include <vector>
+#include <string>
+#include <utility>
+#include "Token.h"
+
+// Classe base para todos os nós da árvore
+class Expr {
+public:
+    virtual ~Expr() = default;
+};
+
+// Nó para números literais
+class NumberExpr : public Expr {
+public:
+    double value;
+    explicit NumberExpr(double val) : value(val) {}
+};
+
+// Nó para operações binárias (como 10 + 5)
+class BinaryExpr : public Expr {
+public:
+    std::string op;
+    std::unique_ptr<Expr> left;
+    std::unique_ptr<Expr> right;
+
+    BinaryExpr(std::string op, std::unique_ptr<Expr> left, std::unique_ptr<Expr> right)
+        : op(std::move(op)), left(std::move(left)), right(std::move(right)) {}
+};
+
+#endif
+
+src/Parser.h
+#ifndef PARSER_H
+#define PARSER_H
+
+#include "Lexer.h"
+#include "AST.h"
+
+class Parser {
+public:
+    explicit Parser(Lexer& lexer);
+    std::unique_ptr<Expr> parseExpression();
+
+private:
+    Lexer& lexer;
+    Token currentToken;
+
+    void getNextToken();
+    std::unique_ptr<Expr> parseNumberExpr();
+};
+
+#endif
+
+src/Parser.cpp
+
+
+src/main.cpp
+
+
+Makefile
+
+Agora que você tem o código completo e revisado, por favor, substitua seus arquivos e tente compilar e executar novamente. Isso deve resolver o problema e garantir que sua base esteja sólida.
+Assim que você confirmar que funcionou, me avise para que possamos registrar essa correção no nosso fluxo de trabalho e seguir em frente.
