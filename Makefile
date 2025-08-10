@@ -10,3 +10,4 @@ lynx: src/main.cpp src/Lexer.cpp src/Parser.cpp src/Evaluator.cpp
 
 clean:
 	rm -f bin/lynx
+	rm -rf bin/
