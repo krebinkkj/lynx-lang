@@ -7,6 +7,10 @@ Parser::Parser(Lexer &lexer) : lexer(lexer) {
   opPrecedence[TokenType::MINUS] = 10;
   opPrecedence[TokenType::MULTIPLY] = 20;
   opPrecedence[TokenType::DIVIDE] = 20;
+  opPrecedence[TokenType::EQ] = 5;
+  opPrecedence[TokenType::NEQ] = 5;
+  opPrecedence[TokenType::LT] = 6;
+  opPrecedence[TokenType::GT] = 6;
 
   getNextToken(); // Pega o primeiro token
 }
@@ -100,11 +104,33 @@ std::unique_ptr<Expr> Parser::parseExpression() {
 }
 
 std::unique_ptr<Expr> Parser::parseStatement() {
+  if (currentToken.type == TokenType::IF) {
+    return parseifStmt();
+  }
   auto expr = parseExpression();
   if (currentToken.type == TokenType::SEMICOLON) {
     getNextToken();
   }
   return expr;
+}
+
+std::unique_ptr<Expr> Parser::parseifStmt() {
+  getNextToken();
+
+  auto condition = parseExpression();
+  if (!condition) return nullptr;
+
+  auto thenBlock = parseStatement();
+  if (!thenBlock) return nullptr;
+
+  std::unique_ptr<Expr> elseBlock = nullptr;
+  if (currentToken.type == TokenType::ELSE) {
+    getNextToken();
+    elseBlock = parseStatement();
+    if (!elseBlock)return nullptr;
+  }
+
+  return std::make_unique<IfStmt>(std::move(condition), std::move(thenBlock), std::move(elseBlock));
 }
 
 std::unique_ptr<Program> Parser::parseProgram() {

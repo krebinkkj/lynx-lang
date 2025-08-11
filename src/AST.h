@@ -53,4 +53,13 @@ class Program {
     std::vector<std::unique_ptr<Expr>> statements;
 };
 
+class IfStmt : public Expr {
+  public:
+    std::unique_ptr<Expr> condition;
+    std::unique_ptr<Expr> thenBlock;
+    std::unique_ptr<Expr> elseBlock;
+
+    IfStmt(std::unique_ptr<Expr> cond, std::unique_ptr<Expr> thenB, std::unique_ptr<Expr> elseB) : condition(std::move(cond)), thenBlock(std::move(thenB)), elseBlock(std::move(elseB)) {}
+};
+
 #endif

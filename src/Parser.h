@@ -22,6 +22,7 @@ private:
   std::unique_ptr<Expr> parseVariableExpr();
   std::unique_ptr<Expr> parseBinaryOpExpr(std::unique_ptr<Expr> left, int exprPrec);
   std::unique_ptr<Expr> parseStatement();
+  std::unique_ptr<Expr> parseifStmt();
   int getOpPrecedence();
 };
 

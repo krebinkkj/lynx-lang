@@ -28,7 +28,7 @@
 
 int main()
 {
-  std::string code = "x = 10; y = x * 2; y + 5";
+  std::string code = "x = 3; if (x > 5) y = 2; else y = 90 * x;";
 
   Lexer lexer(code);
   Parser parser(lexer);

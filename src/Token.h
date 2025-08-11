@@ -29,6 +29,16 @@ enum class TokenType
 
   // Separador de intruções
   SEMICOLON, // ;
+
+  // Palavras-chave
+  IF, // if
+  ELSE, // else
+
+  // Operadores de comparação
+  EQ, // ==
+  NEQ, // !=
+  LT, // <
+  GT, // >
 };
 
 struct Token
