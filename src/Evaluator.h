@@ -7,10 +7,11 @@
 class Evaluator {
     public:
         void evaluateProgram(const Program *program);
+        double evaluate(const Expr *ast);
 
     private:
         std::map<std::string, double> variables;
-        double evaluate(const Expr *ast);
+        std::map<std::string, const FunctionDef *> functions;
 };
 
 #endif

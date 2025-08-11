@@ -48,6 +48,8 @@ Token Lexer::getNextToken()
       return {TokenType::IF, "if"};
     } else if (identifier == "else") {
       return {TokenType::ELSE, "else"};
+    } else if (identifier == "func") {
+      return {TokenType::FUNC, "func"};
     }
     return {TokenType::IDENTIFIER, identifier};
   }
@@ -98,8 +100,26 @@ Token Lexer::getNextToken()
   case '>':
     currentPos++;
     return {TokenType::GT, ">"};
+  case '{':
+    currentPos++;
+    return {TokenType::LBRACE, "{"};
+
+  case '}':
+    currentPos++;
+    return {TokenType::RBRACE, "}"};
+
+  case ',':
+    currentPos++;
+    return {TokenType::COMMA, ","};
   }
 
-  std::cerr << "Erro léxico: Caractere incesperado '" << currentChar << "'" << std::endl;
+  std::cerr << "Erro léxico: Caractere inesperado '" << currentChar << "'" << std::endl;
   return {TokenType::EOF_TOKEN, ""};
+}
+
+Token Lexer::peekNextToken() {
+  size_t oldPos = currentPos;
+  Token nextToken = getNextToken();
+  currentPos = oldPos;
+  return nextToken;
 }

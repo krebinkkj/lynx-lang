@@ -33,12 +33,18 @@ enum class TokenType
   // Palavras-chave
   IF, // if
   ELSE, // else
+  FUNC, // func
 
   // Operadores de comparação
   EQ, // ==
   NEQ, // !=
   LT, // <
   GT, // >
+
+  // Símbolos de escopo
+  LBRACE, // {
+  RBRACE, // }
+  COMMA, // ,
 };
 
 struct Token

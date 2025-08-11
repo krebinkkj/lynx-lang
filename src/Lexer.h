@@ -8,6 +8,7 @@ class Lexer {
   public:
     explicit Lexer(const std::string &source);
     Token getNextToken();
+    Token peekNextToken();
 
   private:
     std::string source;

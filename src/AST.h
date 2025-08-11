@@ -14,6 +14,13 @@ public:
   virtual ~Expr() = default;
 };
 
+// Nó raiz para um programa e blocos de código
+class Program
+{
+public:
+  std::vector<std::unique_ptr<Expr>> statements;
+};
+
 // Nó para números literais
 class NumberExpr : public Expr
 {
@@ -34,32 +41,56 @@ public:
       : op(std::move(op)), left(std::move(left)), right(std::move(right)) {}
 };
 
-
-class VariableExpr : public Expr {
-  public:
-    std::string name;
-    explicit VariableExpr(std::string name) : name(std::move(name)) {}
+// Nó para variáveis (lookup)
+class VariableExpr : public Expr
+{
+public:
+  std::string name;
+  explicit VariableExpr(std::string name) : name(std::move(name)) {}
 };
 
-class AssignmentExpr : public Expr {
-  public:
-    std::string name;
-    std::unique_ptr<Expr> value;
-    AssignmentExpr(std::string name, std::unique_ptr<Expr> value) : name(std::move(name)), value(std::move(value)) {}
+// Nó para atribuição (e.g., x = 10)
+class AssignmentExpr : public Expr
+{
+public:
+  std::string name;
+  std::unique_ptr<Expr> value;
+  AssignmentExpr(std::string name, std::unique_ptr<Expr> value)
+      : name(std::move(name)), value(std::move(value)) {}
 };
 
-class Program {
-  public:
-    std::vector<std::unique_ptr<Expr>> statements;
+// Nó para a instrução if-else
+class IfStmt : public Expr
+{
+public:
+  std::unique_ptr<Expr> condition;
+  std::unique_ptr<Program> thenBlock;
+  std::unique_ptr<Program> elseBlock;
+
+  IfStmt(std::unique_ptr<Expr> cond, std::unique_ptr<Program> thenB, std::unique_ptr<Program> elseB) : condition(std::move(cond)), thenBlock(std::move(thenB)), elseBlock(std::move(elseB)) {}
 };
 
-class IfStmt : public Expr {
-  public:
-    std::unique_ptr<Expr> condition;
-    std::unique_ptr<Expr> thenBlock;
-    std::unique_ptr<Expr> elseBlock;
+// Nó para a definição de uma função
+class FunctionDef : public Expr
+{
+public:
+  std::string name;
+  std::vector<std::string> params;
+  std::unique_ptr<Program> body;
 
-    IfStmt(std::unique_ptr<Expr> cond, std::unique_ptr<Expr> thenB, std::unique_ptr<Expr> elseB) : condition(std::move(cond)), thenBlock(std::move(thenB)), elseBlock(std::move(elseB)) {}
+  FunctionDef(std::string name, std::vector<std::string> params, std::unique_ptr<Program> body)
+      : name(std::move(name)), params(std::move(params)), body(std::move(body)) {}
+};
+
+// Nó para a chamada de uma função
+class FunctionCall : public Expr
+{
+public:
+  std::string name;
+  std::vector<std::unique_ptr<Expr>> args;
+
+  FunctionCall(std::string name, std::vector<std::unique_ptr<Expr>> args)
+      : name(std::move(name)), args(std::move(args)) {}
 };
 
 #endif
