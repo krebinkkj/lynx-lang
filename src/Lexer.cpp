@@ -1,5 +1,6 @@
 #include "Lexer.h"
 #include <cctype>
+#include <iostream>
 
 Lexer::Lexer(const std::string &source)
     : source(source), currentPos(0) {}
@@ -32,7 +33,7 @@ Token Lexer::getNextToken()
     return {TokenType::NUMBER, number};
   }
 
-  // Checar por identificadores (letras e _)
+  // Checar por identificadores e palavras-chave
   if (isalpha(currentChar) || currentChar == '_')
   {
     std::string identifier;
@@ -40,6 +41,13 @@ Token Lexer::getNextToken()
     {
       identifier += source[currentPos];
       currentPos++;
+    }
+
+    // Verifica se o identificador é uma palavra-chave
+    if (identifier == "if") {
+      return {TokenType::IF, "if"};
+    } else if (identifier == "else") {
+      return {TokenType::ELSE, "else"};
     }
     return {TokenType::IDENTIFIER, identifier};
   }
@@ -66,13 +74,32 @@ Token Lexer::getNextToken()
     currentPos++;
     return {TokenType::RPAREN, ")"}; // Token temporário para ')', será corrigido
   case '=':
+    if (source[currentPos + 1] == '=') {
+      currentPos += 2;
+      return {TokenType::EQ, "=="};
+    }
     currentPos++;
     return {TokenType::ASSIGN, "="};
   case ';':
     currentPos++;
     return {TokenType::SEMICOLON, ";"};
+
+  case '!':
+    if (source[currentPos + 1] == '=') {
+      currentPos += 2;
+      return {TokenType::NEQ, "!="};
+    }
+    break;
+
+  case '<':
+    currentPos++;
+    return {TokenType::LT, "<"};
+
+  case '>':
+    currentPos++;
+    return {TokenType::GT, ">"};
   }
 
-  // Se não for nenhum dos tipos acima, consideramos o fim
+  std::cerr << "Erro léxico: Caractere incesperado '" << currentChar << "'" << std::endl;
   return {TokenType::EOF_TOKEN, ""};
 }
