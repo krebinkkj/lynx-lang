@@ -93,4 +93,10 @@ public:
       : name(std::move(name)), args(std::move(args)) {}
 };
 
+class BooleanExpr : public Expr {
+  public:
+    bool value;
+    explicit BooleanExpr(bool val) : value(val) {}
+};
+
 #endif

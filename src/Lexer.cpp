@@ -50,6 +50,10 @@ Token Lexer::getNextToken()
       return {TokenType::ELSE, "else"};
     } else if (identifier == "func") {
       return {TokenType::FUNC, "func"};
+    } else if (identifier == "true") {
+      return {TokenType::TRUE, "true"};
+    } else if (identifier == "false") {
+      return {TokenType::FALSE, "false"};
     }
     return {TokenType::IDENTIFIER, identifier};
   }
