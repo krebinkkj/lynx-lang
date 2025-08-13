@@ -45,6 +45,10 @@ enum class TokenType
   LBRACE, // {
   RBRACE, // }
   COMMA, // ,
+
+  // Booleans
+  TRUE, // true
+  FALSE, // false
 };
 
 struct Token

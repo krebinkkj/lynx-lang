@@ -40,6 +40,16 @@ std::unique_ptr<Expr> Parser::parsePrimary()
         return result;
     }
 
+    if (currentToken.type == TokenType::TRUE) {
+        getNextToken();
+        return std::make_unique<BooleanExpr>(true);
+    }
+
+    if (currentToken.type == TokenType::FALSE) {
+        getNextToken();
+        return std::make_unique<BooleanExpr>(false);
+    }
+
     if (currentToken.type == TokenType::LPAREN)
     {
         getNextToken();
